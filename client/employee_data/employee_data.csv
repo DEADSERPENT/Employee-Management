@@ -1,0 +1,51 @@
+id ,username           ,email                          ,phonenumber ,designation             ,employeeId
+ 1 ,arjun.sharma       ,arjun.sharma@example.com       , 9876543210 ,Software Engineer       ,EMP001
+ 2 ,priya.verma        ,priya.verma@example.com        , 8765432109 ,Data Analyst            ,EMP002
+ 3 ,rohit.nair         ,rohit.nair@example.com         , 9123456789 ,Project Manager         ,EMP003
+ 4 ,sneha.patil        ,sneha.patil@example.com        , 9988776655 ,UI/UX Designer          ,EMP004
+ 5 ,vikram.kumar       ,vikram.kumar@example.com       , 9090909090 ,DevOps Engineer         ,EMP005
+ 6 ,ananya.das         ,ananya.das@example.com         , 9876512345 ,HR Manager              ,EMP006
+ 7 ,rishi.sen          ,rishi.sen@example.com          , 8765123498 ,Product Manager         ,EMP007
+ 8 ,meera.reddy        ,meera.reddy@example.com        , 9654781230 ,QA Engineer             ,EMP008
+ 9 ,aravind.iyer       ,aravind.iyer@example.com       , 9564712398 ,Full Stack Developer    ,EMP009
+10 ,swati.jain         ,swati.jain@example.com         , 8999887766 ,Marketing Head          ,EMP010
+11 ,rajiv.pillai       ,rajiv.pillai@example.com       , 8787878787 ,Backend Developer       ,EMP011
+12 ,kavita.singh       ,kavita.singh@example.com       , 9898989898 ,Data Scientist          ,EMP012
+13 ,manoj.chauhan      ,manoj.chauhan@example.com      , 7777666655 ,System Admin            ,EMP013
+14 ,deepa.mishra       ,deepa.mishra@example.com       , 6666555544 ,Frontend Developer      ,EMP014
+15 ,sandeep.kapoor     ,sandeep.kapoor@example.com     , 9988221133 ,Business Analyst        ,EMP015
+16 ,varun.rao          ,varun.rao@example.com          , 9090123456 ,Security Engineer       ,EMP016
+17 ,shruti.agarwal     ,shruti.agarwal@example.com     , 8765987412 ,Research Analyst        ,EMP017
+18 ,gautam.bhatt       ,gautam.bhatt@example.com       , 7896541230 ,AI Engineer             ,EMP018
+19 ,sonali.mehta       ,sonali.mehta@example.com       , 8547123659 ,Tech Lead               ,EMP019
+20 ,abhishek.dubey     ,abhishek.dubey@example.com     , 9638527410 ,Scrum Master            ,EMP020
+21 ,tanvi.menon        ,tanvi.menon@example.com        , 9514782369 ,HR Executive            ,EMP021
+22 ,vikas.gupta        ,vikas.gupta@example.com        , 7412589630 ,IT Support              ,EMP022
+23 ,dev.rajput         ,dev.rajput@example.com         , 9871236540 ,Finance Manager         ,EMP023
+24 ,ritu.joshi         ,ritu.joshi@example.com         , 8523697412 ,Mobile Developer        ,EMP024
+25 ,karan.bose         ,karan.bose@example.com         , 7418529630 ,Game Developer          ,EMP025
+26 ,aarti.sen          ,aarti.sen@example.com          , 9632587410 ,Customer Support        ,EMP026
+27 ,nitin.yadav        ,nitin.yadav@example.com        , 8521479630 ,IT Manager              ,EMP027
+28 ,meenakshi.kulkarni ,meenakshi.kulkarni@example.com , 9988774455 ,Digital Marketer        ,EMP028
+29 ,rohan.trivedi      ,rohan.trivedi@example.com      , 7654321987 ,Cyber Security Analyst  ,EMP029
+30 ,nisha.kapoor       ,nisha.kapoor@example.com       , 9213456789 ,Data Engineer           ,EMP030
+31 ,sanjay.mahajan     ,sanjay.mahajan@example.com     , 8529637410 ,ML Engineer             ,EMP031
+32 ,kavya.iyengar      ,kavya.iyengar@example.com      , 9517538520 ,Network Engineer        ,EMP032
+33 ,raghav.bansal      ,raghav.bansal@example.com      , 9638527412 ,Cloud Architect         ,EMP033
+34 ,devika.dutta       ,devika.dutta@example.com       , 8745632109 ,Operations Manager      ,EMP034
+35 ,sumit.sarkar       ,sumit.sarkar@example.com       , 9852147630 ,Embedded Engineer       ,EMP035
+36 ,yash.goel          ,yash.goel@example.com          , 7485963210 ,Content Strategist      ,EMP036
+37 ,parul.pandey       ,parul.pandey@example.com       , 9321457689 ,UX Researcher           ,EMP037
+38 ,amit.srivastava    ,amit.srivastava@example.com    , 8547963214 ,IT Consultant           ,EMP038
+39 ,snehal.more        ,snehal.more@example.com        , 7854962310 ,SEO Specialist          ,EMP039
+40 ,rahul.chatterjee   ,rahul.chatterjee@example.com   , 9874512630 ,Blockchain Developer    ,EMP040
+41 ,divya.raman        ,divya.raman@example.com        , 9512365478 ,Cloud Engineer          ,EMP041
+42 ,akash.kumar        ,akash.kumar@example.com        , 8745632198 ,AI Researcher           ,EMP042
+43 ,supriya.bhagat     ,supriya.bhagat@example.com     , 9784521365 ,Graphic Designer        ,EMP043
+44 ,rohit.chauhan      ,rohit.chauhan@example.com      , 7854692135 ,Robotics Engineer       ,EMP044
+45 ,pallavi.jain       ,pallavi.jain@example.com       , 9541236587 ,CRM Manager             ,EMP045
+46 ,vishal.tandon      ,vishal.tandon@example.com      , 8523697415 ,Cloud Security Engineer ,EMP046
+47 ,aniket.singh       ,aniket.singh@example.com       , 9638521470 ,Big Data Engineer       ,EMP047
+48 ,sneha.rao          ,sneha.rao@example.com          , 9874561230 ,IoT Developer           ,EMP048
+49 ,mahesh.patel       ,mahesh.patel@example.com       , 8745123698 ,Performance Engineer    ,EMP049
+50 ,anushka.sen        ,anushka.sen@example.com        , 7458963214 ,UI Designer             ,EMP050
