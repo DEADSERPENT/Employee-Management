@@ -1,0 +1,125 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Employee Management</title>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">    
+      <link rel="stylesheet" href="style.css">
+      
+  </head>
+  <body>
+      <div class="container">
+          <h2>Employee Management</h2>
+          <div class="card">
+              <form id="empForm">
+                  <div class="input-group">
+                      <label for="id">ID</label>
+                      <input type="text" id="id" required>
+                  </div>
+                  <div class="input-group">
+                      <label for="username">Username</label>
+                      <input type="text" id="username" required>
+                  </div>
+                  <div class="input-group">
+                      <label for="email">Email</label>
+                      <input type="email" id="email" required>
+                  </div>
+                  <div class="input-group">
+                      <label for="phone">Phone Number</label>
+                      <input type="text" id="phone" required>
+                  </div>
+                  <div class="input-group">
+                      <label for="designation">Designation</label>
+                      <input type="text" id="designation" required>
+                  </div>
+                  <div class="input-group">
+                      <label for="employeeId">Employee ID</label>
+                      <input type="text" id="employeeId" required>
+                  </div>
+                  <div class="input-group">
+                      <label>&nbsp;</label>
+                      <button type="submit" class="btn-primary">Add Employee</button>
+                  </div>
+                  <div class="input-group">
+                      <label>&nbsp;</label>
+                      <button type="button" class="btn-secondary" onclick="resetForm()">Reset</button>
+                  </div>
+              </form>
+          </div>
+
+          <div class="card">
+              <h3>Employee List</h3>
+              <div class="search-container">
+                  <input type="text" id="search" placeholder="Search for employee">
+                  <button type="button" onclick="searchEmployees()">Search</button>
+              </div>
+              <div class="card1">
+                  <table>
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th>Username</th>
+                              <th>Email</th>
+                              <th>Phone Number</th>
+                              <th>Designation</th>
+                              <th>Employee ID</th>
+                              <th>Actions</th>
+                          </tr>
+                      </thead>
+                      <tbody id="empTableBody"></tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+
+      <!-- Update Modal -->
+      <div id="updateModal" class="modal-overlay">
+          <div class="modal">
+              <div class="modal-header">
+                  <h3 class="modal-title">Update Employee</h3>
+                  <button class="modal-close" onclick="closeUpdateModal()">&times;</button>
+              </div>
+              <div class="modal-body">
+                  <div class="input-group">
+                      <label for="updateUsername">Username</label>
+                      <input type="text" id="updateUsername" required>
+                  </div>
+                  <div class="input-group">
+                      <label for="updatePhone">Phone Number</label>
+                      <input type="text" id="updatePhone" required>
+                  </div>
+                  <div class="input-group">
+                      <label for="updateDesignation">Designation</label>
+                      <input type="text" id="updateDesignation" required>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn-secondary" onclick="closeUpdateModal()">Cancel</button>
+                  <button class="btn-primary" onclick="confirmUpdate()">Update</button>
+              </div>
+          </div>
+      </div>
+
+      <!-- Delete Confirmation Modal -->
+      <div id="deleteModal" class="modal-overlay">
+          <div class="modal">
+              <div class="modal-header">
+                  <h3 class="modal-title">Confirm Delete</h3>
+                  <button class="modal-close" onclick="closeDeleteModal()">&times;</button>
+              </div>
+              <div class="modal-body">
+                  <p>Are you sure you want to delete this employee?</p>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                  <button class="btn-danger" onclick="confirmDelete()">Delete</button>
+              </div>
+          </div>
+      </div>
+
+      <!-- Toast Notification -->
+      <div id="toast" class="toast"></div>
+  <script src="script.js">JAVASCRIPT</script>
+  </body>
+  </html>
