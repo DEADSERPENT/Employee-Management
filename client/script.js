@@ -1,5 +1,5 @@
 // API Base URL
-const API_URL = 'http://localhost:8000';
+const API_URL = 'http://localhost:3000';
 let currentEmployeeId = null;
 let employeeList = [];
 let updateOriginalData = {};
@@ -41,14 +41,20 @@ function openUpdateModal(employeeId, username, phonenumber, designation) {
     document.getElementById('updateDesignation').value = designation;
     // Store the original values for comparison later
     updateOriginalData = { username, phonenumber, designation };
-    document.getElementById('updateModal').style.display = 'flex';
+    const modal = document.getElementById('updateModal');
+    modal.style.display = 'flex';
+    // Focus management for accessibility
+    setTimeout(() => document.getElementById('updateUsername').focus(), 100);
 }
 function closeUpdateModal() {
     document.getElementById('updateModal').style.display = 'none';
 }
 function openDeleteModal(employeeId) {
     currentEmployeeId = employeeId;
-    document.getElementById('deleteModal').style.display = 'flex';
+    const modal = document.getElementById('deleteModal');
+    modal.style.display = 'flex';
+    // Focus management for accessibility
+    setTimeout(() => document.getElementById('confirmDeleteBtn').focus(), 100);
 }
 function closeDeleteModal() {
     document.getElementById('deleteModal').style.display = 'none';
@@ -58,19 +64,24 @@ function closeDeleteModal() {
 async function loadEmployees() {
     showLoading(true);
     try {
-    const response = await fetch(`${API_URL}/getAll`);
-    await handleResponse(response);
-    const data = await response.json();
-    console.log("Fetched employee list:", data);
-    employeeList = Array.isArray(data) ? data : [];
-    employeeList.sort((a, b) => parseInt(a.id) - parseInt(b.id));
-    updateEmployeeTable();
+        const response = await fetch(`${API_URL}/getAll`);
+        await handleResponse(response);
+        const data = await response.json();
+        employeeList = Array.isArray(data) ? data : [];
+        employeeList.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+        updateEmployeeTable();
     } catch (error) {
-    showToast(error.message);
-    employeeList = [];
-    updateEmployeeTable();
-    console.error(error);
+        showToast(error.message);
+        employeeList = [];
+        updateEmployeeTable();
     }
+}
+
+// Helper function to sanitize text and prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // Update Employee Table
@@ -79,26 +90,73 @@ function updateEmployeeTable() {
     tableBody.innerHTML = '';
 
     if (employeeList.length === 0) {
-    tableBody.innerHTML = '<tr><td colspan="7">No employees found</td></tr>';
-    return;
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 7;
+        cell.textContent = 'No employees found';
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+        return;
     }
 
     employeeList.forEach(emp => {
-    console.log("Employee data:", emp);
-    const row = document.createElement('tr');
-    row.innerHTML = `
-        <td>${emp.id}</td>
-        <td>${emp.username}</td>
-        <td>${emp.email}</td>
-        <td>${emp.phonenumber || ''}</td>
-        <td>${emp.designation}</td>
-        <td>${emp.employeeId}</td>
-        <td class="actions">
-        <button class="btn-primary" onclick="openUpdateModal('${emp.employeeId}', '${emp.username}', '${emp.phonenumber || ''}', '${emp.designation}')">Update</button>
-        <button class="btn-danger" onclick="openDeleteModal('${emp.employeeId}')">Delete</button>
-        </td>
-    `;
-    tableBody.appendChild(row);
+        const row = document.createElement('tr');
+
+        // Create cells with textContent (safe from XSS)
+        const idCell = document.createElement('td');
+        idCell.textContent = emp.id;
+
+        const usernameCell = document.createElement('td');
+        usernameCell.textContent = emp.username;
+
+        const emailCell = document.createElement('td');
+        emailCell.textContent = emp.email;
+
+        const phoneCell = document.createElement('td');
+        phoneCell.textContent = emp.phonenumber || '';
+
+        const designationCell = document.createElement('td');
+        designationCell.textContent = emp.designation;
+
+        const employeeIdCell = document.createElement('td');
+        employeeIdCell.textContent = emp.employeeId;
+
+        // Create actions cell
+        const actionsCell = document.createElement('td');
+        actionsCell.className = 'actions';
+
+        const updateBtn = document.createElement('button');
+        updateBtn.className = 'btn-primary';
+        updateBtn.textContent = 'Update';
+        updateBtn.dataset.employeeId = emp.employeeId;
+        updateBtn.dataset.username = emp.username;
+        updateBtn.dataset.phonenumber = emp.phonenumber || '';
+        updateBtn.dataset.designation = emp.designation;
+        updateBtn.addEventListener('click', function() {
+            openUpdateModal(this.dataset.employeeId, this.dataset.username, this.dataset.phonenumber, this.dataset.designation);
+        });
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn-danger';
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.dataset.employeeId = emp.employeeId;
+        deleteBtn.addEventListener('click', function() {
+            openDeleteModal(this.dataset.employeeId);
+        });
+
+        actionsCell.appendChild(updateBtn);
+        actionsCell.appendChild(deleteBtn);
+
+        // Append all cells to row
+        row.appendChild(idCell);
+        row.appendChild(usernameCell);
+        row.appendChild(emailCell);
+        row.appendChild(phoneCell);
+        row.appendChild(designationCell);
+        row.appendChild(employeeIdCell);
+        row.appendChild(actionsCell);
+
+        tableBody.appendChild(row);
     });
 }
 
@@ -107,53 +165,67 @@ function validateInputs(inputs) {
     return inputs.every(input => input.trim() !== '');
 }
 
-// Form Submission with enhanced validation and duplicate checks
+// Form Submission with enhanced validation
 document.getElementById('empForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const newId = document.getElementById('id').value;
-    const newEmployeeId = document.getElementById('employeeId').value;
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
-    const phone = document.getElementById('phone').value;
-    const designation = document.getElementById('designation').value;
+    const newEmployeeId = document.getElementById('employeeId').value.trim();
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const designation = document.getElementById('designation').value.trim();
 
-    if (!validateInputs([newId, newEmployeeId, username, email, phone, designation])) {
-    showToast('All fields are required!');
-    return;
+    // Client-side validation
+    if (!validateInputs([newEmployeeId, username, email, phone, designation])) {
+        showToast('All fields are required!');
+        return;
     }
 
-    // Check for duplicate IDs in the current list
-    if (employeeList.some(emp => emp.id === newId || emp.employeeId === newEmployeeId)) {
-    showToast('Error: Employee ID or ID already exists!');
-    return;
-    }
-    
-    // Check for duplicate phone number in the current list
-    if (employeeList.some(emp => emp.phonenumber === phone)) {
-    showToast('Error: Phone number already exists!');
-    return;
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showToast('Please enter a valid email address');
+        return;
     }
 
-    // Check for duplicate email in the current list (for Gmail)
-    if (employeeList.some(emp => emp.email === email)) {
-    showToast('Error: Email already exists!');
-    return;
+    // Validate phone number format (10 digits)
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+        showToast('Phone number must be exactly 10 digits');
+        return;
+    }
+
+    // Validate username length
+    if (username.length < 2) {
+        showToast('Username must be at least 2 characters');
+        return;
     }
 
     try {
-    const response = await fetch(`${API_URL}/addEmp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: newId, username, email, phonenumber: phone, designation, employeeId: newEmployeeId })
-    });
-    await handleResponse(response);
-    showToast('Employee added successfully');
-    resetForm();
-    loadEmployees();
+        const response = await fetch(`${API_URL}/addEmp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username,
+                email,
+                phonenumber: phone,
+                designation,
+                employeeId: newEmployeeId
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || data.details || 'Failed to add employee');
+        }
+
+        showToast('Employee added successfully');
+        resetForm();
+        loadEmployees();
     } catch (error) {
-    showToast(error.message);
-    console.error(error);
+        showToast(error.message);
+        console.error(error);
     }
 });
 
@@ -178,13 +250,27 @@ async function confirmDelete() {
 
 // Confirm Employee Update
 async function confirmUpdate() {
-    const newUsername = document.getElementById('updateUsername').value;
-    const newPhone = document.getElementById('updatePhone').value;
-    const newDesignation = document.getElementById('updateDesignation').value;
+    const newUsername = document.getElementById('updateUsername').value.trim();
+    const newPhone = document.getElementById('updatePhone').value.trim();
+    const newDesignation = document.getElementById('updateDesignation').value.trim();
 
+    // Client-side validation
     if (!validateInputs([newUsername, newPhone, newDesignation])) {
-    showToast('All fields are required!');
-    return;
+        showToast('All fields are required!');
+        return;
+    }
+
+    // Validate phone number format (10 digits)
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(newPhone)) {
+        showToast('Phone number must be exactly 10 digits');
+        return;
+    }
+
+    // Validate username length
+    if (newUsername.length < 2) {
+        showToast('Username must be at least 2 characters');
+        return;
     }
 
     // Check if no changes were made based on stored original data
@@ -193,23 +279,33 @@ async function confirmUpdate() {
         newPhone === updateOriginalData.phonenumber &&
         newDesignation === updateOriginalData.designation
     ) {
-        showToast('Nothing changed');
+        showToast('No changes detected');
         return;
     }
 
     try {
-    const response = await fetch(`${API_URL}/updateEmp/${currentEmployeeId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: newUsername, phonenumber: newPhone, designation: newDesignation })
-    });
-    await handleResponse(response);
-    showToast('Employee updated successfully');
-    closeUpdateModal();
-    loadEmployees();
+        const response = await fetch(`${API_URL}/updateEmp/${currentEmployeeId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: newUsername,
+                phonenumber: newPhone,
+                designation: newDesignation
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || data.details || 'Failed to update employee');
+        }
+
+        showToast('Employee updated successfully');
+        closeUpdateModal();
+        loadEmployees();
     } catch (error) {
-    showToast(error.message);
-    console.error(error);
+        showToast(error.message);
+        console.error(error);
     }
 }
 
@@ -226,6 +322,32 @@ function searchEmployees() {
 
 // Search on input event as well
 document.getElementById('search').addEventListener('input', searchEmployees);
+
+// Event listeners for buttons
+document.getElementById('resetBtn').addEventListener('click', resetForm);
+document.getElementById('searchBtn').addEventListener('click', searchEmployees);
+document.getElementById('closeUpdateModalBtn').addEventListener('click', closeUpdateModal);
+document.getElementById('cancelUpdateBtn').addEventListener('click', closeUpdateModal);
+document.getElementById('confirmUpdateBtn').addEventListener('click', confirmUpdate);
+document.getElementById('closeDeleteModalBtn').addEventListener('click', closeDeleteModal);
+document.getElementById('cancelDeleteBtn').addEventListener('click', closeDeleteModal);
+document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
+
+// Close modals when clicking on overlay
+document.getElementById('updateModal').addEventListener('click', function(e) {
+    if (e.target === this) closeUpdateModal();
+});
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteModal();
+});
+
+// Keyboard accessibility - ESC key to close modals
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeUpdateModal();
+        closeDeleteModal();
+    }
+});
 
 // Initial Load
 loadEmployees();
